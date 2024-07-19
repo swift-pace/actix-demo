@@ -1,4 +1,6 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+mod api;
+use api::health::health_api::{health_check, hello_pirate};
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -20,6 +22,8 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .service(hello)
             .service(echo)
+            .service(hello_pirate)
+            .service(health_check)
             .route("/hey", web::get().to(manual_hello))
     })
     .bind(("127.0.0.1", 8080))?
